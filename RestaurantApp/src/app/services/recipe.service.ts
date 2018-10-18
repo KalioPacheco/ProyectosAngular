@@ -1,19 +1,39 @@
-import { Recipe } from '../recipes/recipe.model';
+import { Recipe } from "../recipes/recipe.model";
+import { EventEmitter, Injectable } from "@angular/core";
+import { Ingredient } from "../shared/ingredient.model";
+import { IngredientsService } from "./ingredients.service";
 
+
+@Injectable() // Decorador para poder agregar un servicio dentro de otro
 export class RecipeService {
-     private recipes: Recipe[] = [
-     new Recipe('Pizza1', 'This is a simply test1',
-      'http://www.titospizzaandwings.com/wp-content/uploads/2016/07/3toppingpizza.jpg'),
-     new Recipe('Pizza2', 'This is a simply test2',
-      'http://www.titospizzaandwings.com/wp-content/uploads/2016/07/3toppingpizza.jpg'),
-     new Recipe('Pizza3', 'This is a simply test3',
-      'http://www.titospizzaandwings.com/wp-content/uploads/2016/07/3toppingpizza.jpg'),
-     new Recipe('Pizza4', 'This is a simply test4',
-      'http://www.titospizzaandwings.com/wp-content/uploads/2016/07/3toppingpizza.jpg'),
-      new Recipe('Tacos5', 'This is a simply test5',
-      'https://www.happycoffeemao.com/web/wp-content/uploads/2017/09/tacos.jpg')
-  ];
-  getRecipes() {
-      return this.recipes.slice();
-  }
+    recipeSelected = new EventEmitter<Recipe>();
+    
+    private recipes: Recipe[] = [
+        new Recipe('A test recipe 1', 'This is a simply test ', 'http://sevilla.abc.es/contenidopromocionado/wp-content/uploads/sites/2/2017/09/1996x1206-hamburguesas.jpg', 
+    [
+        new Ingredient('bread', 2),
+        new Ingredient('tomatoes', 3)
+    ]),
+        new Recipe('A test recipe 2', 'This is a simply test', 'http://sevilla.abc.es/contenidopromocionado/wp-content/uploads/sites/2/2017/09/1996x1206-hamburguesas.jpg',
+        [
+            new Ingredient('Beef', 3),
+            new Ingredient('garlic', 1)
+        ]),
+        new Recipe('A test recipe 3', 'This is a simply test', 'http://sevilla.abc.es/contenidopromocionado/wp-content/uploads/sites/2/2017/09/1996x1206-hamburguesas.jpg',
+        [
+            new Ingredient('Sauce', 2),
+        ])
+    ];
+
+    //Crear constructor para utilizar el ingredientsService
+    constructor(private ingredientsService: IngredientsService){}
+
+      getRecipes(){
+          return this.recipes.slice();
+      }
+
+      //Metodo para invocar desde la vista
+      addIngredientsToShoppingList(ingredients: Ingredient[]){
+        this.ingredientsService.addIngredients(ingredients);
+      }
 }
