@@ -20,8 +20,7 @@ export class IngredientsService {
     //Una vez obtenidos se deben guardar en el arreglo, con un foreach donde se obtiene el objeto con una constante i
     addIngredients(auxIngredients: Ingredient[]) {
         for (const i of auxIngredients) {
-            let array = this.ingredients.find(element => element.name==i.name);
-            (array)?array.amount=array.amount+i.amount:this.ingredients.push(i)
+            (this.ingredients.find(element => element.name==i.name))?this.ingredients.find(element => element.name==i.name).amount=this.ingredients.find(element => element.name==i.name).amount+i.amount:this.ingredients.push(i)
         }
         //Una vez esto se debera volvera a ejecutar el evento con el emitter
         this.ingredientsChanged.emit(this.ingredients.slice());
