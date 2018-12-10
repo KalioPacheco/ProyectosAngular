@@ -1,4 +1,6 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { AuthService } from '../guards/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -7,14 +9,25 @@ import { Component, OnInit, Output, EventEmitter} from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  //@Output() featureSelected = new EventEmitter<string>();
-  constructor() { }
-
- // onSelect(feature: string){
-   // this.featureSelected.emit(feature);
-  //}
+  editMode = false;
+  constructor(private authService: AuthService) { }
+  private subscription: Subscription;
 
   ngOnInit() {
+    this.editMode = this.authService.isUserLoggedIn();
+    this.subscription = this.authService.AuhtNext.subscribe(
+      (element: boolean) => {
+        this.editMode = element;
+      }
+    );
+  }
+
+  Cambio() {
+    this.authService.isxD();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }
